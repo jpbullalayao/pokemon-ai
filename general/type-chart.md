@@ -2,35 +2,38 @@
 
 Authoritative type matchup reference for the 18-type system used in current games
 and VGC. Use this to reason about super-effective hits, resistances, and
-immunities. For exact damage numbers (rolls, OHKO/2HKO), use the damage
-calculator tool instead; this file covers type effectiveness only.
+immunities.
 
 ## How to read effectiveness
 
 Multipliers apply to a move's damage based on the defender's type(s):
 
-| Value | Meaning           | Damage |
-| ----- | ----------------- | ------ |
-| `2`   | Super effective   | 200%   |
-| `1`   | Neutral           | 100%   |
-| `½`   | Not very effective| 50%    |
-| `0`   | No effect (immune)| 0%     |
+
+| Value | Meaning            | Damage |
+| ----- | ------------------ | ------ |
+| `2`   | Super effective    | 200%   |
+| `1`   | Neutral            | 100%   |
+| `½`   | Not very effective | 50%    |
+| `0`   | No effect (immune) | 0%     |
+
 
 Rules for reasoning:
 
 - Dual-type defenders multiply the two values together. Example: a Ground move vs
-  a Water/Rock target = `2 x 2 = 4x` (quad damage). A Grass move vs a Fire/Flying
-  target = `½ x ½ = ¼x`.
+a Water/Rock target = `2 x 2 = 4x` (quad damage). A Grass move vs a Fire/Flying
+target = `½ x ½ = ¼x`.
 - Any `0` against either of the defender's types makes the whole hit `0` (immunity
-  wins). Example: Electric vs Ground/Flying = `0`.
+wins). Example: Electric vs Ground/Flying = `0`.
 - STAB (Same-Type Attack Bonus, 1.5x when the attacker shares the move's type) and
-  Terastallization are separate multipliers, not part of this chart.
+Terastallization are separate multipliers, not part of this chart.
+
+In the summaries below, **"—" means none** (no types in that category).
 
 ---
 
 ## Offensive summary (what each attacking type hits)
 
-For each type: what its moves are strong/weak against. "—" means none.
+For each type: what its moves are strong/weak against.
 
 - **Normal** — Super effective: — · Resisted by: Rock, Steel · No effect: Ghost
 - **Fire** — Super effective: Grass, Ice, Bug, Steel · Resisted by: Fire, Water, Rock, Dragon
@@ -56,7 +59,6 @@ For each type: what its moves are strong/weak against. "—" means none.
 ## Defensive summary (what each type takes when hit)
 
 For each type: what threatens it. This is the primary lens for team building.
-"—" means none.
 
 - **Normal** — Weak to: Fighting · Resists: — · Immune to: Ghost
 - **Fire** — Weak to: Water, Ground, Rock · Resists: Fire, Grass, Ice, Bug, Steel, Fairy · Immune to: —
@@ -86,6 +88,7 @@ attack against that single defending type. Blank-looking cells are `1` (neutral)
 
 Column abbreviations: Nor Fir Wat Ele Gra Ice Fig Poi Gro Fly Psy Bug Roc Gho Dra Dar Ste Fai
 
+
 | ATK \ DEF | Nor | Fir | Wat | Ele | Gra | Ice | Fig | Poi | Gro | Fly | Psy | Bug | Roc | Gho | Dra | Dar | Ste | Fai |
 | --------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Normal    | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | ½   | 0   | 1   | 1   | ½   | 1   |
@@ -107,15 +110,4 @@ Column abbreviations: Nor Fir Wat Ele Gra Ice Fig Poi Gro Fly Psy Bug Roc Gho Dr
 | Steel     | 1   | ½   | ½   | ½   | 1   | 2   | 1   | 1   | 1   | 1   | 1   | 1   | 2   | 1   | 1   | 1   | ½   | 2   |
 | Fairy     | 1   | ½   | 1   | 1   | 1   | 1   | 2   | ½   | 1   | 1   | 1   | 1   | 1   | 1   | 2   | 2   | ½   | 1   |
 
----
 
-## Quick reference notes
-
-- **Most resistant defending type:** Steel (resists 10 types, immune to Poison).
-- **No-damage immunities:** Normal->Ghost, Fighting->Ghost, Ghost->Normal,
-  Electric->Ground, Ground->Flying, Psychic->Dark, Poison->Steel, Dragon->Fairy.
-- **Only types with no resistances on defense:** Normal (its sole interaction is the
-  Ghost immunity).
-- **Common VGC offensive coverage:** Fighting + Flying, Ground + Ice, and Fairy +
-  Steel/Fire pairings hit most of the chart for super-effective damage. Validate
-  specific matchups against the matrix above before committing to a calc.
