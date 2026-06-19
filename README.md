@@ -5,7 +5,7 @@ Reference docs and agent skills for Pokemon and VGC workflows. Each skill is ind
 ## Reference docs
 
 - [general/nature-chart.md](general/nature-chart.md) — nature stat modifiers
-- [general/type-chart.md](general/type-chart.md) — type matchups (Gen 6+)
+- [general/type-chart.md](general/type-chart.md) — type matchups
 - [vgc/champions/](vgc/champions/) — Pokemon Champions meta references
 
 ## Skills
@@ -16,6 +16,14 @@ Authoritative reference for the 25-nature system used in current games and VGC. 
 
 ```bash
 npx skills add jpbullalayao/pokemon-ai --skill pokemon-nature-chart
+```
+
+### `pokemon-type-chart`
+
+Authoritative type matchup reference for the 18-type system. Use when reasoning about super-effective hits, resistances, immunities, dual-type damage, or team-building defensive profiles.
+
+```bash
+npx skills add jpbullalayao/pokemon-ai --skill pokemon-type-chart
 ```
 
 ## Install all at once
