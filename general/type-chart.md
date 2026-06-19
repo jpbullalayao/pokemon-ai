@@ -20,7 +20,7 @@ Multipliers apply to a move's damage based on the defender's type(s):
 Rules for reasoning:
 
 - Dual-type defenders multiply the two values together. Example: a Ground move vs
-a Water/Rock target = `2 x 2 = 4x` (quad damage). A Grass move vs a Fire/Flying
+a Fire/Rock target = `2 x 2 = 4x` (quad damage). A Grass move vs a Fire/Flying
 target = `½ x ½ = ¼x`.
 - Any `0` against either of the defender's types makes the whole hit `0` (immunity
 wins). Example: Electric vs Ground/Flying = `0`.
