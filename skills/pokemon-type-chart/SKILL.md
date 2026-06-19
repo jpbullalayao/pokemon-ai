@@ -101,7 +101,7 @@ Column abbreviations: Nor Fir Wat Ele Gra Ice Fig Poi Gro Fly Psy Bug Roc Gho Dr
 | ATK \ DEF | Nor | Fir | Wat | Ele | Gra | Ice | Fig | Poi | Gro | Fly | Psy | Bug | Roc | Gho | Dra | Dar | Ste | Fai |
 | --------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Normal    | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | 1   | ½   | 0   | 1   | 1   | ½   | 1   |
-| Fire      | 1   | ½   | ½   | 1   | 2   | 2   | 1   | 1   | 1   | 1   | 1   | 2   | 1   | 1   | ½   | 1   | 2   | 1   |
+| Fire      | 1   | ½   | ½   | 1   | 2   | 2   | 1   | 1   | 1   | 1   | 1   | 2   | ½   | 1   | ½   | 1   | 2   | 1   |
 | Water     | 1   | 2   | ½   | 1   | ½   | 1   | 1   | 1   | 2   | 1   | 1   | 1   | 2   | 1   | ½   | 1   | 1   | 1   |
 | Electric  | 1   | 1   | 2   | ½   | ½   | 1   | 1   | 1   | 0   | 2   | 1   | 1   | 1   | 1   | ½   | 1   | 1   | 1   |
 | Grass     | 1   | ½   | 2   | 1   | ½   | 1   | 1   | ½   | 2   | ½   | 1   | ½   | 2   | 1   | ½   | 1   | ½   | 1   |
