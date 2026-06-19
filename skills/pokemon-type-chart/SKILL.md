@@ -1,3 +1,12 @@
+---
+name: pokemon-type-chart
+description: >
+  Pokemon type matchup reference for the 18-type system. Use when reasoning
+  about super-effective hits, resistances, immunities, dual-type damage, type
+  coverage, weaknesses, STAB-adjacent matchups, or which move type beats a
+  defending type.
+---
+
 # Pokemon Type Chart
 
 Authoritative type matchup reference for the 18-type system used in Pokemon
@@ -109,5 +118,3 @@ Column abbreviations: Nor Fir Wat Ele Gra Ice Fig Poi Gro Fly Psy Bug Roc Gho Dr
 | Dark      | 1   | 1   | 1   | 1   | 1   | 1   | ½   | 1   | 1   | 1   | 2   | 1   | 1   | 2   | 1   | ½   | 1   | ½   |
 | Steel     | 1   | ½   | ½   | ½   | 1   | 2   | 1   | 1   | 1   | 1   | 1   | 1   | 2   | 1   | 1   | 1   | ½   | 2   |
 | Fairy     | 1   | ½   | 1   | 1   | 1   | 1   | 2   | ½   | 1   | 1   | 1   | 1   | 1   | 1   | 2   | 2   | ½   | 1   |
-
-
