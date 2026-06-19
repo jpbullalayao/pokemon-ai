@@ -8,36 +8,51 @@ pokeapi-cli identifier (`pkmn item <name>`).
 
 | Name           | pokeapi-cli name |
 | -------------- | ---------------- |
+| Big Root       | `big-root`       |
 | Black Belt     | `black-belt`     |
 | Black Glasses  | `black-glasses`  |
 | Bright Powder  | `bright-powder`  |
 | Charcoal       | `charcoal`       |
 | Choice Scarf   | `choice-scarf`   |
+| Damp Rock      | `damp-rock`      |
 | Dragon Fang    | `dragon-fang`    |
+| Expert Belt    | `expert-belt`    |
 | Fairy Feather  | `fairy-feather`  |
 | Focus Band     | `focus-band`     |
 | Focus Sash     | `focus-sash`     |
 | Hard Stone     | `hard-stone`     |
+| Heat Rock      | `heat-rock`      |
+| Icy Rock       | `icy-rock`       |
+| Iron Ball      | `iron-ball`      |
 | King's Rock    | `kings-rock`     |
 | Leftovers      | `leftovers`      |
+| Life Orb       | `life-orb`       |
 | Light Ball     | `light-ball`     |
+| Light Clay     | `light-clay`     |
 | Magnet         | `magnet`         |
 | Mental Herb    | `mental-herb`    |
+| Metronome      | `metronome`      |
 | Metal Coat     | `metal-coat`     |
 | Miracle Seed   | `miracle-seed`   |
+| Muscle Band    | `muscle-band`    |
 | Mystic Water   | `mystic-water`   |
 | Never-Melt Ice | `never-melt-ice` |
 | Poison Barb    | `poison-barb`    |
 | Quick Claw     | `quick-claw`     |
 | Scope Lens     | `scope-lens`     |
 | Sharp Beak     | `sharp-beak`     |
+| Shed Shell     | `shed-shell`     |
 | Shell Bell     | `shell-bell`     |
 | Silk Scarf     | `silk-scarf`     |
 | Silver Powder  | `silver-powder`  |
+| Smooth Rock    | `smooth-rock`    |
 | Soft Sand      | `soft-sand`      |
 | Spell Tag      | `spell-tag`      |
 | Twisted Spoon  | `twisted-spoon`  |
 | White Herb     | `white-herb`     |
+| Wide Lens      | `wide-lens`      |
+| Wise Glasses   | `wise-glasses`   |
+| Zoom Lens      | `zoom-lens`      |
 
 
 ## Mega Stones
@@ -54,56 +69,72 @@ pokeapi-cli identifier (`pkmn item <name>`).
 | Ampharosite    | `ampharosite`    |
 | Audinite       | `audinite`       |
 | Banettite      | `banettite`      |
+| Barbaracite    | N/A              |
 | Beedrillite    | `beedrillite`    |
 | Blastoisinite  | `blastoisinite`  |
+| Blazikenite    | `blazikenite`    |
 | Cameruptite    | `cameruptite`    |
-| Chandelurite   | `chandelurite`   |
+| Chandelurite   | N/A              |
 | Charizardite X | `charizardite-x` |
 | Charizardite Y | `charizardite-y` |
-| Chesnaughtite  | `chesnaughtite`  |
-| Chimechite     | `chimechite`     |
-| Clefablite     | `clefablite`     |
-| Crabominite    | `crabominite`    |
-| Delphoxite     | `delphoxite`     |
-| Dragoninite    | `dragoninite`    |
-| Drampanite     | `drampanite`     |
-| Emboarite      | `emboarite`      |
-| Excadrite      | `excadrite`      |
-| Feraligite     | `feraligite`     |
-| Floettite      | `floettite`      |
-| Froslassite    | `froslassite`    |
+| Chesnaughtite  | N/A              |
+| Chimechite     | N/A              |
+| Clefablite     | N/A              |
+| Crabominite    | N/A              |
+| Delphoxite     | N/A              |
+| Dragalgite     | N/A              |
+| Dragoninite    | N/A              |
+| Drampanite     | N/A              |
+| Eelektrossite  | N/A              |
+| Emboarite      | N/A              |
+| Excadrite      | N/A              |
+| Falinksite     | N/A              |
+| Feraligite     | N/A              |
+| Floettite      | N/A              |
+| Froslassite    | N/A              |
 | Galladite      | `galladite`      |
 | Garchompite    | `garchompite`    |
 | Gardevoirite   | `gardevoirite`   |
 | Gengarite      | `gengarite`      |
 | Glalitite      | `glalitite`      |
-| Glimmoranite   | `glimmoranite`   |
-| Golurkite      | `golurkite`      |
-| Greninjite     | `greninjite`     |
+| Glimmoranite   | N/A              |
+| Golurkite      | N/A              |
+| Greninjite     | N/A              |
 | Gyaradosite    | `gyaradosite`    |
-| Hawluchanite   | `hawluchanite`   |
+| Hawluchanite   | N/A              |
 | Heracronite    | `heracronite`    |
 | Houndoominite  | `houndoominite`  |
 | Kangaskhanite  | `kangaskhanite`  |
 | Lopunnite      | `lopunnite`      |
 | Lucarionite    | `lucarionite`    |
+| Malamarite     | N/A              |
 | Manectite      | `manectite`      |
+| Mawilite       | `mawilite`       |
 | Medichamite    | `medichamite`    |
-| Meganiumite    | `meganiumite`    |
-| Meowsticite    | `meowsticite`    |
+| Meganiumite    | N/A              |
+| Meowsticite    | N/A              |
+| Metagrossite   | `metagrossite`   |
 | Pidgeotite     | `pidgeotite`     |
 | Pinsirite      | `pinsirite`      |
+| Pyroarite      | N/A              |
+| Raichunite X   | N/A              |
+| Raichunite Y   | N/A              |
 | Sablenite      | `sablenite`      |
+| Sceptilite     | `sceptilite`     |
 | Scizorite      | `scizorite`      |
-| Scovillainite  | `scovillainite`  |
+| Scolipite      | N/A              |
+| Scovillainite  | N/A              |
+| Scraftinite    | N/A              |
 | Sharpedonite   | `sharpedonite`   |
-| Skarmorite     | `skarmorite`     |
+| Skarmorite     | N/A              |
 | Slowbronite    | `slowbronite`    |
-| Starminite     | `starminite`     |
+| Staraptite     | N/A              |
+| Starminite     | N/A              |
 | Steelixite     | `steelixite`     |
+| Swampertite    | `swampertite`    |
 | Tyranitarite   | `tyranitarite`   |
 | Venusaurite    | `venusaurite`    |
-| Victreebelite  | `victreebelite`  |
+| Victreebelite  | N/A              |
 
 
 ## Berries
@@ -144,28 +175,28 @@ pokeapi-cli identifier (`pkmn item <name>`).
 ## Miscellaneous Items
 
 
-| Name                          | pokeapi-cli name                |
-| ----------------------------- | ------------------------------- |
-| Bug-Type Affinity Ticket      | `bug-type-affinity-ticket`      |
-| Dark-Type Affinity Ticket     | `dark-type-affinity-ticket`     |
-| Dragon-Type Affinity Ticket   | `dragon-type-affinity-ticket`   |
-| Electric-Type Affinity Ticket | `electric-type-affinity-ticket` |
-| Fairy-Type Affinity Ticket    | `fairy-type-affinity-ticket`    |
-| Fighting-Type Affinity Ticket | `fighting-type-affinity-ticket` |
-| Fire-Type Affinity Ticket     | `fire-type-affinity-ticket`     |
-| Flying-Type Affinity Ticket   | `flying-type-affinity-ticket`   |
-| Ghost-Type Affinity Ticket    | `ghost-type-affinity-ticket`    |
-| Grass-Type Affinity Ticket    | `grass-type-affinity-ticket`    |
-| Ground-Type Affinity Ticket   | `ground-type-affinity-ticket`   |
-| Ice-Type Affinity Ticket      | `ice-type-affinity-ticket`      |
-| Normal-Type Affinity Ticket   | `normal-type-affinity-ticket`   |
-| Poison-Type Affinity Ticket   | `poison-type-affinity-ticket`   |
-| Psychic-Type Affinity Ticket  | `psychic-type-affinity-ticket`  |
-| Quick Coupon                  | `quick-coupon`                  |
-| Rock-Type Affinity Ticket     | `rock-type-affinity-ticket`     |
-| Steel-Type Affinity Ticket    | `steel-type-affinity-ticket`    |
-| Teammate Ticket               | `teammate-ticket`               |
-| Training Ticket               | `training-ticket`               |
-| Water-Type Affinity Ticket    | `water-type-affinity-ticket`    |
+| Name                          | pokeapi-cli name |
+| ----------------------------- | ---------------- |
+| Bug-Type Affinity Ticket      | N/A              |
+| Dark-Type Affinity Ticket     | N/A              |
+| Dragon-Type Affinity Ticket   | N/A              |
+| Electric-Type Affinity Ticket | N/A              |
+| Fairy-Type Affinity Ticket    | N/A              |
+| Fighting-Type Affinity Ticket | N/A              |
+| Fire-Type Affinity Ticket     | N/A              |
+| Flying-Type Affinity Ticket   | N/A              |
+| Ghost-Type Affinity Ticket    | N/A              |
+| Grass-Type Affinity Ticket    | N/A              |
+| Ground-Type Affinity Ticket   | N/A              |
+| Ice-Type Affinity Ticket      | N/A              |
+| Normal-Type Affinity Ticket   | N/A              |
+| Poison-Type Affinity Ticket   | N/A              |
+| Psychic-Type Affinity Ticket  | N/A              |
+| Quick Coupon                  | N/A              |
+| Rock-Type Affinity Ticket     | N/A              |
+| Steel-Type Affinity Ticket    | N/A              |
+| Teammate Ticket               | N/A              |
+| Training Ticket               | N/A              |
+| Water-Type Affinity Ticket    | N/A              |
 
 
