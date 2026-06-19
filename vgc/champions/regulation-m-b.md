@@ -1,9 +1,7 @@
 # Regulation M-B New Pokemon
 
-Pokemon newly legal in the Regulation M-B ruleset (Season M-3). Each entry includes the canonical  
+Pokemon newly legal in the Regulation M-B ruleset. Each entry includes the canonical  
 pokeapi-cli identifier (`pkmn pokemon <name>`).
-
-Source: [Serebii — Ranked Battle Season M-3 (Regulation M-B)](https://www.serebii.net/pokemonchampions/rankedbattle/seasonm-3.shtml)
 
 
 | Name              | pokeapi-cli name   |
