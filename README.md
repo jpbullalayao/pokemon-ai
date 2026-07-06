@@ -35,6 +35,14 @@ Authoritative move priority reference for Generation IX turn order. Use when rea
 npx skills add jpbullalayao/pokemon-ai --skill pokemon-move-priority-list
 ```
 
+### `pokemon-champions`
+
+Domain reference for Pokemon Champions competitive play — Regulation M-A/M-B, roster legality, and item availability. Authoritative lists in [vgc/champions/](vgc/champions/).
+
+```bash
+npx skills add jpbullalayao/pokemon-ai --skill pokemon-champions
+```
+
 ## Install all at once
 
 ```bash
