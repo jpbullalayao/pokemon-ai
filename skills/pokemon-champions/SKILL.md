@@ -2,9 +2,9 @@
 name: pokemon-champions
 description: >
   Pokemon Champions competitive domain reference. Use when working with
-  Pokemon Champions, Regulation M-A, Regulation M-B, VGC roster legality,
-  Champions items, mega evolution, or ranked/event format questions.
-  Authoritative roster and item lists live in vgc/champions/.
+  Pokemon Champions, VGC roster legality, Champions items, mega evolution,
+  or ranked/event format questions. Authoritative roster and item lists
+  live in vgc/champions/.
 ---
 
 # Pokemon Champions
@@ -19,8 +19,7 @@ VGC events on Nintendo Switch and mobile. Battles are Doubles format at Level 50
 ### Regulation M-A
 
 The first Champions ruleset. Legal Pokemon are listed in
-[vgc/champions/regulation-m-a.md](vgc/champions/regulation-m-a.md)
-(~270 entries).
+[vgc/champions/regulation-m-a.md](vgc/champions/regulation-m-a.md).
 
 ### Regulation M-B
 
@@ -31,41 +30,38 @@ Extends Regulation M-A. Pokemon newly legal in M-B are listed in
 M-B legal roster = all entries in Regulation M-A **plus** all entries in the
 M-B additions file. The M-B file is a **delta**, not a standalone roster.
 
-### Shared rules
-
-- No duplicate species (same National Dex number)
-- No duplicate held items
-- One Mega Evolution per battle
-
 ---
+
+
 
 ## Reference files
 
-| File | Contents |
-| ---- | -------- |
-| [vgc/champions/pokemon.md](vgc/champions/pokemon.md) | Full Champions roster (~272 entries) |
-| [vgc/champions/regulation-m-a.md](vgc/champions/regulation-m-a.md) | M-A legal Pokemon |
-| [vgc/champions/regulation-m-b.md](vgc/champions/regulation-m-b.md) | Pokemon newly legal in M-B |
-| [vgc/champions/items.md](vgc/champions/items.md) | Hold items, mega stones, berries, miscellaneous |
+
+| File                                                               | Contents                                        |
+| ------------------------------------------------------------------ | ----------------------------------------------- |
+| [vgc/champions/pokemon.md](vgc/champions/pokemon.md)               | Full Champions roster                           |
+| [vgc/champions/regulation-m-a.md](vgc/champions/regulation-m-a.md) | M-A legal Pokemon                               |
+| [vgc/champions/regulation-m-b.md](vgc/champions/regulation-m-b.md) | M-B legal pokemon                               |
+| [vgc/champions/items.md](vgc/champions/items.md)                   | All items                                       |
+
 
 The full roster in `pokemon.md` equals the combined Regulation M-A and M-B
 legal lists (M-A ∪ M-B).
 
 ---
 
+
+
 ## Table conventions
 
 All reference files use the same column format:
 
-| Column | Meaning |
-| ------ | ------- |
-| **Name** | Display name, including form variants (e.g. "Mega Charizard X", "Paldean Tauros (Combat Breed)") |
-| **pokeapi-cli name** | Canonical slug for `pkmn pokemon <slug>` or `pkmn item <slug>` |
-| **N/A** | Champions-exclusive entry with no PokeAPI slug |
 
-### items.md categories
+| Column               | Meaning                                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------------------ |
+| **Name**             | Display name, including form variants (e.g. "Mega Charizard X", "Paldean Tauros (Combat Breed)") |
+| **pokeapi-cli name** | Canonical slug for `pkmn pokemon <slug>` or `pkmn item <slug>`                                   |
 
-- **Hold Items** — type-boosting items, Choice Scarf, Leftovers, etc.
-- **Mega Stones** — stones for Mega Evolution (many Champions-exclusive megas show `N/A`)
-- **Berries** — resist and recovery berries
-- **Miscellaneous Items** — affinity tickets, training tickets, etc.
+
+
+
