@@ -19,6 +19,8 @@ Authoritative reference for the 25-nature system used in current games and VGC. 
 npx skills add jpbullalayao/pokemon-ai --skill pokemon-nature-chart
 ```
 
+
+
 ### `pokemon-type-chart`
 
 Authoritative type matchup reference for the 18-type system. Use when reasoning about super-effective hits, resistances, immunities, dual-type damage, or team-building defensive profiles.
@@ -26,6 +28,8 @@ Authoritative type matchup reference for the 18-type system. Use when reasoning 
 ```bash
 npx skills add jpbullalayao/pokemon-ai --skill pokemon-type-chart
 ```
+
+
 
 ### `pokemon-move-priority-list`
 
@@ -35,8 +39,21 @@ Authoritative move priority reference for Generation IX turn order. Use when rea
 npx skills add jpbullalayao/pokemon-ai --skill pokemon-move-priority-list
 ```
 
+
+
+### `pokemon-champions`
+
+Domain reference for Pokemon Champions competitive play — regulation rulesets, roster legality, and item availability. Authoritative lists in [vgc/champions/](vgc/champions/).
+
+```bash
+npx skills add jpbullalayao/pokemon-ai --skill pokemon-champions
+```
+
+
+
 ## Install all at once
 
 ```bash
 npx skills add jpbullalayao/pokemon-ai
 ```
+
