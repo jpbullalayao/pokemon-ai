@@ -54,13 +54,21 @@ legal lists (M-A ∪ M-B).
 
 ## Table conventions
 
-All reference files use the same column format:
+Pokemon and item reference files share a common column format:
 
 
 | Column               | Meaning                                                                                          |
 | -------------------- | ------------------------------------------------------------------------------------------------ |
 | **Name**             | Display name, including form variants (e.g. "Mega Charizard X", "Paldean Tauros (Combat Breed)") |
 | **pokeapi-cli name** | Canonical slug for `pkmn pokemon <slug>` or `pkmn item <slug>`                                   |
+
+[`items.md`](vgc/champions/items.md) adds columns for hold items and berries; mega stones get **Shop VP** only (miscellaneous items use the base format):
+
+
+| Column      | Meaning                                                                                       |
+| ----------- | --------------------------------------------------------------------------------------------- |
+| **Shop VP** | Victory Points to buy from the Frontier Shop; blank if not shop-purchasable                   |
+| **Type**    | Game8 held-item category (e.g. Power Boost, Defense, Recovery); hold items and berries only   |
 
 
 
