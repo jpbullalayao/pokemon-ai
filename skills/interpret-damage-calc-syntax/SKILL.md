@@ -1,7 +1,7 @@
 ---
 name: interpret-damage-calc-syntax
 description: >
-  Reference for interpreting Pokemon damage calculator output syntax — EV
+  Reference for interpreting Pokemon damage calculator syntax — EV
   spreads, IV counts, nature markers (+/−), stat stages (+1 to +6, −1 to
   −6), field modifiers, items, abilities, damage ranges, HP percentages, and
   KO verdicts (OHKO, 2HKO, etc.). Use when reading or explaining damage calc
@@ -30,15 +30,14 @@ IV counts appear when a calc uses a **non-default** IV for that stat.
 | `32 Atk` | 32 EVs in Attack (neutral nature for Atk) |
 | `32+ Atk` | 32 EVs in Attack with an Attack-boosting nature |
 | `252- SpA` | 252 EVs in Special Attack with a SpA-reducing nature |
-| `max attack` | Max investment in Attack with an Attack-boosting nature — **32 EVs** in Pokemon Champions, **252 EVs** in most other games |
 | `4 HP / 0 Def` | 4 EVs in HP and 0 EVs in Defense (slash separates multiple stats) |
 | `0 Atk 0 IVs` | 0 Attack EVs **and** 0 IVs in Attack (neutral nature) |
-| `252 HP 31 IVs` | 252 HP EVs with 31 IVs in HP (explicit max IV) |
+| `252 HP 31 IVs` | 252 HP EVs with 31 IVs in HP |
 
 **Nature markers**
 
-- `+` after the EV count → boosting nature for that stat (+10%)
-- `−` after the EV count → hindering nature for that stat (−10%)
+- `+` after the EV count → boosting nature for that stat
+- `−` after the EV count → hindering nature for that stat
 - No marker → neutral nature for that stat (no +/− on that stat)
 
 **Stat abbreviations** (full names also appear in calcs)
@@ -90,26 +89,37 @@ Stages stack with nature, items, abilities, and field modifiers in the calc.
 A complete damage calc string follows this general shape:
 
 ```
-[stage?] [attacker spread] [IVs?] [attacker] [item?] [ability?] [move] vs. [defender spread] [IVs?] [defender] [field modifiers?]: [damage] ([% HP]) -- [KO verdict]
+[stage?] [spread] [IVs?] [held item?] [ability?] [attacker] [move] vs. [spread] [IVs?] [held item?] [defender] [field modifiers?]: [damage] ([% HP]) -- [KO verdict]
 ```
 
 Parse each segment left to right. Omitted segments are not active in that calc.
+
+**Ordering:** After the spread (and optional `N IVs`), **held item** and **ability**
+names appear **before** the Pokemon name, in that order. Both can be present in
+the same calc — e.g. `Life Orb Beads of Ruin Calyrex-Shadow` means the attacker
+holds Life Orb **and** a teammate's Beads of Ruin aura is active. The move name
+always immediately precedes `vs.` (or ends the attacker segment).
 
 ### Attacker segment
 
 Everything before `vs.` describes the attacking Pokemon and move:
 
 - **Spread** — EV/nature (and optional stage prefix); **`N IVs`** when non-default
-- **Pokemon name** — e.g. `Miraidon`, `Zacian-Crowned`, `Urshifu-Rapid-Strike`
-- **Held item** — e.g. `Choice Specs`, `Sword of Ruin` (item name in the string implies it is held and affecting damage)
-- **Ability** — e.g. `Hadron Engine` (presence implies it is active and affecting the calc)
-- **Move** — e.g. `Electro Drift`, `Play Rough`, `Surging Strikes (3 hits)`
+- **Held item** — e.g. `Choice Specs`, `Life Orb` (attacker's held item; appears
+  before the Pokemon name and affects damage)
+- **Ability** — attacker's own ability (e.g. `Hadron Engine`) **or** a **field
+  ability** from another Pokemon on the field (e.g. `Sword of Ruin`, `Beads of
+  Ruin`); item and field ability can both appear in one calc
+- **Pokemon name** — e.g. `Miraidon`, `Calyrex-Shadow`, `Urshifu-Rapid-Strike`
+- **Move** — e.g. `Electro Drift`, `Astral Barrage`, `Surging Strikes (3 hits)`
 
 ### Defender segment
 
 After `vs.`:
 
 - **Spread** — defender EV/IV investment, same notation as attacker
+- **Held item** — e.g. `Assault Vest` (defender's held item; appears before the
+  Pokemon name when relevant to the calc)
 - **Pokemon name** — target of the attack
 
 ### Field and battle modifiers
@@ -123,6 +133,13 @@ Phrases after the defender name describe active conditions affecting damage:
 | `in Rain` | Rain is active |
 | `through Reflect` | Reflect is active on the defender's side (physical damage reduction) |
 | `on a critical hit` | Calc assumes a critical hit |
+| `Sword of Ruin` | Chien-Pao (or another Sword of Ruin user) is on the field; lowers foe Defense |
+| `Beads of Ruin` | Chi-Yu (or another Beads of Ruin user) is on the field; lowers foe Sp. Def |
+
+Field abilities from **teammates** (Ruin abilities, etc.) appear in the
+attacker segment (before the attacker's name) even though they belong to a different
+Pokemon — their presence means that Pokemon is assumed on the field and the aura
+is active. They stack with the attacker's own held item in the same string.
 
 Other common modifiers: weather (`Sun`, `Sand`), terrains, screens (`Light Screen`),
 auras, and similar — treat any such phrase as an **active condition** assumed in
@@ -190,13 +207,15 @@ roll-dependent odds.
 `(3 hits)` = Surging Strikes hits three times (total damage shown). `in Rain`
 and `on a critical hit` are both assumed active.
 
-### Example 4 — ability-as-prefix, guaranteed 2HKO
+### Example 4 — field ability from teammate, guaranteed 2HKO
 
 ```
 116+ Atk Sword of Ruin Rillaboom Grassy Glide vs. 4 HP / 4 Def Urshifu-Rapid-Strike: 120-144 (68.1 - 81.8%) -- guaranteed 2HKO
 ```
 
-`Sword of Ruin` here is Rillaboom's ability (lowers foe Def), not a held item.
+`Sword of Ruin` is **not** Rillaboom's ability or held item — it means a Pokemon
+with Sword of Ruin (typically **Chien-Pao**) is on the field at the same time,
+and its aura (lowering foe Defense) is included in the calc.
 
 ### Example 5 — screen modifier
 
@@ -222,6 +241,25 @@ physical damage.
 Compare to Example 5 (same matchup, default IVs): higher damage and
 `guaranteed 2HKO`. Lower Attack IV materially weakens the calc.
 
+### Example 7 — held item + field ability + defender item
+
+```
+252 SpA 30 IVs Life Orb Beads of Ruin Calyrex-Shadow Astral Barrage vs. 252 HP / 4 SpD Assault Vest Rillaboom: 140-165 (67.6 - 79.7%) -- guaranteed 2HKO
+```
+
+| Segment | Reading |
+| ------- | ------- |
+| `252 SpA 30 IVs` | 252 SpA EVs, neutral nature, **30 IVs in SpA** (non-default) |
+| `Life Orb` | Calyrex-Shadow's held item (+30% damage, recoil not shown) |
+| `Beads of Ruin` | Chi-Yu (or similar) on the field; lowers foe Sp. Def |
+| `Calyrex-Shadow` | Attacker |
+| `Astral Barrage` | Move used |
+| `Assault Vest` | Rillaboom's held item (+50% SpD; affects damage taken) |
+| `guaranteed 2HKO` | Two hits always KO |
+
+Item and field ability are **not** mutually exclusive — read each name between
+the spread and the Pokemon name in order (item first, then field ability).
+
 ---
 
 ## Quick parsing checklist
@@ -230,14 +268,11 @@ When interpreting any damage calc string:
 
 1. **Split on `vs.`** — attacker left, defender right
 2. **Check for stage prefix** (`+N` / `−N`) before attacker spread
-3. **Parse EV/nature** on both sides (`N+ Stat`, `N- Stat`, `N Stat`, `max`)
+3. **Parse EV/nature** on both sides (`N+ Stat`, `N- Stat`, `N Stat`)
 4. **Check for `N IVs`** after a stat — non-default IV for that stat (0–31)
-5. **Identify item vs ability** — both appear as names before the move; context
-   (Pokemon's known ability, item pool) disambiguates when needed
+5. **Parse names between spread and Pokemon** — in order: held item (attacker's),
+   then field ability (teammate's); both may be present; defender may also have
+   a held item before its name (e.g. `Assault Vest Rillaboom`)
 6. **Read field phrases** after defender — all are assumed active
 7. **Read damage range and %** after `:`
 8. **Read KO verdict** after `--` for survivability conclusion
-
-**Champions note:** max EV investment per stat is **32**, not 252. When a calc
-or spread says `max` or uses 32 EVs, it may be Champions-scale; 252 EV spreads
-indicate standard cartridge / Showdown rules.
