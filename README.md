@@ -51,6 +51,16 @@ npx skills add jpbullalayao/pokemon-ai --skill pokemon-champions
 
 
 
+### `interpret-damage-calc-syntax`
+
+Reference for reading Pokemon damage calculator notation — EV spreads, nature markers, stat stages, field modifiers, damage ranges, and KO verdicts. Use when interpreting calc strings like `156+ Atk` or full Showdown-style output lines.
+
+```bash
+npx skills add jpbullalayao/pokemon-ai --skill interpret-damage-calc-syntax
+```
+
+
+
 ## Install all at once
 
 ```bash
