@@ -45,3 +45,25 @@ cp vgc/champions/{pokemon,regulation-m-a,regulation-m-b,items}.md skills/pokemon
 ```
 
 **Verification before finishing:** run `diff -r vgc/champions skills/pokemon-champions/docs` and confirm no differences.
+
+---
+
+## Cursor Cloud specific instructions
+
+This repo is a **content/skills distribution**, not an application: it is only Markdown
+(`SKILL.md` files under `skills/`, reference docs under `general/`, `vgc/`, `tcg/`). There
+is no `package.json`, build step, test runner, or service to start. The update script is a
+no-op sanity check; no dependency install is required.
+
+- **"Lint/test"** = the two consistency checks already documented above:
+ - `diff -r vgc/champions skills/pokemon-champions/docs` → must print nothing.
+ - Every `skills/<name>/` (with `SKILL.md`) has a matching `` ### `<name>` `` section in
+ `README.md`, and vice versa. Compare `ls -d skills/*/` against
+ `rg -o '^### \`([^\`]+)\`' -r '$1' README.md`.
+- **"Run the app"** = distribute a skill with the Vercel `skills` CLI (fetched via `npx`,
+ needs network). For dev testing, install from the local working copy rather than the
+ published `jpbullalayao/pokemon-ai` source; the CLI accepts a local path:
+ `npx -y skills add /workspace --skill <name> --agent cursor --copy -y`. It installs into
+ the target project's `.agents/skills/<name>/`. Non-obvious: pass `-y` (and, when an agent
+ dir like `.agents/` already exists, the CLI auto-detects the agent) to avoid interactive
+ prompts, and `--copy` writes real files instead of symlinks.
