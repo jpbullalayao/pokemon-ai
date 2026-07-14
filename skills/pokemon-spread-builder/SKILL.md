@@ -67,8 +67,9 @@ Confirm the target verdict using the interpret skill's KO verdict table on
 
 ### Nature category (Procedure A)
 
-Before searching bulk EVs, resolve which **nature category** the spread should
-use. Do not default to a pure defensive nature for every defender.
+Before searching bulk EVs — and **before any `pkmn-calc` call** — resolve which
+**nature category** the spread should use. Do not default to a pure defensive
+nature for every defender.
 
 | Category | Typical natures | When |
 | -------- | --------------- | ---- |
@@ -88,12 +89,8 @@ use. Do not default to a pure defensive nature for every defender.
      defensive category.
 2. **If still ambiguous** (e.g. "What does Charizard need to live Rock Slide
    from 32 Atk Garchomp?" with no Spe/offense cue):
-   - Ask **one** clarifying question: whether to optimize under an
+   - **STOP.** Ask **one** clarifying question: whether to optimize under an
      **attacking**, **speed**, or **defensive** nature.
-   - While waiting, or when giving a useful first answer: **default to the
-     potential best category for that species' common competitive role**
-     (Charizard → attacking or speed depending on usage; do not default to pure
-     defensive bulk). State the assumption explicitly (e.g. "assuming Modest…").
 3. **Honor an explicitly stated nature** — do not override it.
 
 Only offer an alternate category if the user asked for options or the primary
@@ -101,13 +98,29 @@ category cannot meet the check within EV caps.
 
 ---
 
+## Efficiency (keep Procedure A/B fast)
+
+- After nature + target + attacker/defender decoding are resolved, run calcs
+  immediately. Do not re-derive format caps, spread-move multipliers, or
+  Champions stat math already covered by the prerequisite skills — pass flags
+  to `pkmn-calc` and read the verdict.
+- Batch a small parallel set of candidate spreads (baseline + suspected
+  minimum + ±1 boundary). Prefer a few targeted calls over planning a large
+  EV grid in prose.
+- Decode "32 Atk" / `+` / nature markers via `interpret-damage-calc-syntax`
+  once; do not re-litigate attacker nature in long internal debate.
+
+---
+
 ## Procedure A — Defender (survive / meet bulk target)
 
 1. **Resolve target outcome** (typically: survive first hit).
-2. **Decode attacker** from the prompt per `interpret-damage-calc-syntax`.
+2. **Decode attacker** from the prompt per `interpret-damage-calc-syntax`
+   (notation only — no calc yet).
 3. **Resolve nature category** and any **EV locks** (Spe / Atk / SpA floors
    implied by speed ties, benchmarks, or stated spreads). Fix the concrete
-   nature before searching bulk.
+   nature. **If nature is ambiguous, stop here and ask — do not proceed to
+   step 4 until answered.**
 4. **Run initial calc** per `pokemon-damage-calc-cli` with default defender
    spread and the game type specified by the harness or user prompt.
 5. **Search defender bulk spreads:** iterate HP × Def (physical) or HP × SpD
@@ -173,6 +186,20 @@ Minimum: Modest `0 HP / 23 Def / 32 Spe`. Boundaries: 22 Def → 6.3% chance to
 OHKO; 24 Def = breakpoint identical to 23 → report 23. This example uses
 `--doubles`; Singles calcs overstate Rock Slide damage and incorrectly suggest
 this spread fails.
+
+---
+
+## Worked example A3 — Ambiguous nature → ask first (no calc yet)
+
+User: "What does Charizard need to live Rock Slide from 32 Atk Garchomp?"
+
+Nature category is ambiguous (no Spe/offense/defensive cue). **Correct first
+response:** ask whether to optimize under attacking, speed, or defensive
+nature. **Incorrect:** assume Modest, run the full EV search, then ask — by
+then the question is late and the answer may be wrong for the user's nature.
+
+After the user replies (e.g. attacking → Modest), proceed with Procedure A
+from step 4.
 
 ---
 
