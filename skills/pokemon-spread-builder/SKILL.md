@@ -91,9 +91,6 @@ nature for every defender.
    from 32 Atk Garchomp?" with no Spe/offense cue):
    - **STOP.** Ask **one** clarifying question: whether to optimize under an
      **attacking**, **speed**, or **defensive** nature.
-   - **Do not** run `pkmn-calc`, search EVs, invent a default nature, or present
-     a provisional spread while waiting. Nature changes the bulk needed and the
-     remaining EV budget — ask first, then calculate after the user answers.
 3. **Honor an explicitly stated nature** — do not override it.
 
 Only offer an alternate category if the user asked for options or the primary
