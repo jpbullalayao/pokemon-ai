@@ -23,30 +23,26 @@ KO outcome. Orchestrates `pkmn-calc` searches.
 Before running this procedure, load:
 
 - `interpret-damage-calc-syntax` — decode spread notation in the prompt and read
-calc output verdicts
+  calc output verdicts
 - `pokemon-damage-calc-cli` — run `pkmn-calc` and respect format EV caps; use
-`--json` for field abilities (e.g. Fairy Aura) per the CLI skill
+  `--json` for field abilities (e.g. Fairy Aura) per the CLI skill
 
 Do not re-document notation, KO verdict tables, or CLI flags here.
 
 ---
-
-
 
 ## Resolve target outcome (first step)
 
 Read the user's prompt to determine the **target calc verdict** before
 searching. Do not assume OHKO unless the user asked for it.
 
-
-| User says…                        | Target verdict (per interpret skill)                      |
-| --------------------------------- | --------------------------------------------------------- |
-| live / survive (first hit)        | **Not** `guaranteed OHKO` and **not** `X% chance to OHKO` |
-| guarantee OHKO / always KO / OHKO | `guaranteed OHKO`                                         |
-| guarantee 2HKO / ensure 2HKO      | `guaranteed 2HKO`                                         |
-| guarantee 3HKO                    | `guaranteed 3HKO`                                         |
-| X% chance to 2HKO (etc.)          | matching `X% chance to NHKO` verdict                      |
-
+| User says… | Target verdict (per interpret skill) |
+| ---------- | ------------------------------------ |
+| live / survive (first hit) | **Not** `guaranteed OHKO` and **not** `X% chance to OHKO` |
+| guarantee OHKO / always KO / OHKO | `guaranteed OHKO` |
+| guarantee 2HKO / ensure 2HKO | `guaranteed 2HKO` |
+| guarantee 3HKO | `guaranteed 3HKO` |
+| X% chance to 2HKO (etc.) | matching `X% chance to NHKO` verdict |
 
 If the outcome is ambiguous (e.g. "KO Archaludon" with no N specified), run a
 baseline calc first, then ask **one** clarifying question — or state the
@@ -57,50 +53,47 @@ Confirm the target verdict using the interpret skill's KO verdict table on
 
 ---
 
-
-
 ## Shared rules
 
 - **Minimize EVs:** always report the **least total EV investment** on
-**unlocked** stats that meets the resolved target. Search from low investment
-upward; never default to max investment. When Spe, Atk, or SpA EVs are locked
-by the prompt, minimize only the remaining bulk axes.
+  **unlocked** stats that meets the resolved target. Search from low investment
+  upward; never default to max investment. When Spe, Atk, or SpA EVs are locked
+  by the prompt, minimize only the remaining bulk axes.
 - **Breakpoint tie-break:** when adjacent EV values produce **identical**
-damage rolls, report the **lower** EV count (e.g. 23 Def over 24 Def).
+  damage rolls, report the **lower** EV count (e.g. 23 Def over 24 Def).
 - **Roles:** infer from prompt — "my X needs to live Y from Z" → X = defender;
-"how much SpA does X need to 2HKO Y" → X = attacker, Y = defender with stated
-spread.
-
-
+  "how much SpA does X need to 2HKO Y" → X = attacker, Y = defender with stated
+  spread.
 
 ### Nature category (Procedure A)
 
-Before searching bulk EVs — and **before any** `pkmn-calc` **call** — resolve which
+Before searching bulk EVs — and **before any `pkmn-calc` call** — resolve which
 **nature category** the spread should use. Do not default to a pure defensive
 nature for every defender.
 
-
-| Category  | Typical natures                                                              | When                                                      |
-| --------- | ---------------------------------------------------------------------------- | --------------------------------------------------------- |
-| Defensive | Bold/Impish/Calm/Careful (boost the threatened bulk stat)                    | Walls, supports, or user asks for bulk / defensive nature |
-| Attacking | Adamant/Modest (etc.); avoid dropping the threatened bulk stat when possible | User wants offensive power preserved                      |
-| Speed     | Jolly/Timid (etc.); same bulk-drop caveat                                    | User cares about outspeeding or speed ties                |
-
+| Category | Typical natures | When |
+| -------- | --------------- | ---- |
+| Defensive | Bold/Impish/Calm/Careful (boost the threatened bulk stat) | Walls, supports, or user asks for bulk / defensive nature |
+| Attacking | Adamant/Modest (etc.); avoid dropping the threatened bulk stat when possible | User wants offensive power preserved |
+| Speed | Jolly/Timid (etc.); same bulk-drop caveat | User cares about outspeeding or speed ties |
 
 **Resolve in this order:**
 
 1. **Infer from the prompt** when constraints imply a category or exact nature:
-  - "Modest Charizard that lives …" → attacking category, nature fixed Modest.
-  - "live Rock Slide … but speed ties with max speed Modest Charizard" →
-  attacking/speed category; nature Modest; Spe locked to that benchmark
-  (Champions: `32 Spe` for max Spe Modest). Remaining EVs go to HP/Def for
-  the survive check.
-  - Incineroar / clearly supportive bulk checks without offensive wording →
-  defensive category.
+   - "Modest Charizard that lives …" → attacking category, nature fixed Modest.
+   - "live Rock Slide … but speed ties with max speed Modest Charizard" →
+     attacking/speed category; nature Modest; Spe locked to that benchmark
+     (Champions: `32 Spe` for max Spe Modest). Remaining EVs go to HP/Def for
+     the survive check.
+   - Incineroar / clearly supportive bulk checks without offensive wording →
+     defensive category.
 2. **If still ambiguous** (e.g. "What does Charizard need to live Rock Slide
-  from 32 Atk Garchomp?" with no Spe/offense cue):
-  - **STOP.** Ask **one** clarifying question: whether to optimize under an  
-  **attacking**, **speed**, or **defensive** nature.
+   from 32 Atk Garchomp?" with no Spe/offense cue):
+   - **STOP.** Ask **one** clarifying question: whether to optimize under an
+     **attacking**, **speed**, or **defensive** nature.
+   - **Do not** run `pkmn-calc`, search EVs, invent a default nature, or present
+     a provisional spread while waiting. Nature changes the bulk needed and the
+     remaining EV budget — ask first, then calculate after the user answers.
 3. **Honor an explicitly stated nature** — do not override it.
 
 Only offer an alternate category if the user asked for options or the primary
@@ -108,66 +101,58 @@ category cannot meet the check within EV caps.
 
 ---
 
-
-
 ## Efficiency (keep Procedure A/B fast)
 
 - After nature + target + attacker/defender decoding are resolved, run calcs
-immediately. Do not re-derive format caps, spread-move multipliers, or
-Champions stat math already covered by the prerequisite skills — pass flags
-to `pkmn-calc` and read the verdict.
+  immediately. Do not re-derive format caps, spread-move multipliers, or
+  Champions stat math already covered by the prerequisite skills — pass flags
+  to `pkmn-calc` and read the verdict.
 - Batch a small parallel set of candidate spreads (baseline + suspected
-minimum + ±1 boundary). Prefer a few targeted calls over planning a large
-EV grid in prose.
+  minimum + ±1 boundary). Prefer a few targeted calls over planning a large
+  EV grid in prose.
 - Decode "32 Atk" / `+` / nature markers via `interpret-damage-calc-syntax`
-once; do not re-litigate attacker nature in long internal debate.
+  once; do not re-litigate attacker nature in long internal debate.
 
 ---
-
-
 
 ## Procedure A — Defender (survive / meet bulk target)
 
 1. **Resolve target outcome** (typically: survive first hit).
 2. **Decode attacker** from the prompt per `interpret-damage-calc-syntax`
-  (notation only — no calc yet).
+   (notation only — no calc yet).
 3. **Resolve nature category** and any **EV locks** (Spe / Atk / SpA floors
-  implied by speed ties, benchmarks, or stated spreads). Fix the concrete
+   implied by speed ties, benchmarks, or stated spreads). Fix the concrete
    nature. **If nature is ambiguous, stop here and ask — do not proceed to
    step 4 until answered.**
 4. **Run initial calc** per `pokemon-damage-calc-cli` with default defender
-  spread and the game type specified by the harness or user prompt.
+   spread and the game type specified by the harness or user prompt.
 5. **Search defender bulk spreads:** iterate HP × Def (physical) or HP × SpD
-  (special) on **unlocked** stats only. Low → high.
+   (special) on **unlocked** stats only. Low → high.
 6. **Stop** at the least-total-EV spread meeting the target verdict under the
-  resolved nature and locks.
+   resolved nature and locks.
 7. **Present:** nature category rationale, any locked EVs, full spread, nature,
-  and `pkmn-calc --text` desc line. If the primary category fails within EV
+   and `pkmn-calc --text` desc line. If the primary category fails within EV
    caps, say so and offer an alternate category only then.
 
 ---
 
-
-
 ## Procedure B — Attacker (meet KO target)
 
 1. **Resolve target outcome** (OHKO, 2HKO, 3HKO, or probability-based — per
-  user prompt).
+   user prompt).
 2. **Decode defender** spread from the prompt per `interpret-damage-calc-syntax`.
-  Include field modifiers stated in the prompt per `pokemon-damage-calc-cli`.
+   Include field modifiers stated in the prompt per `pokemon-damage-calc-cli`.
 3. **Fix attacker** species, nature, move, and any stated items/abilities.
 4. **Search attacker offensive EVs** on the relevant stat (Atk / SpA), including
-  nature variants if not fixed. Low → high.
+   nature variants if not fixed. Low → high.
 5. **Stop** at the **least** offensive EV investment where the calc verdict
-  matches the resolved target.
+   matches the resolved target.
 6. **Breakpoint tie-break:** if N and N+1 EVs produce identical rolls but both
-  meet the target, report N.
+   meet the target, report N.
 7. **Present:** spread, nature, target outcome stated explicitly, and
-  `pkmn-calc --text` desc line.
+   `pkmn-calc --text` desc line.
 
 ---
-
-
 
 ## Worked example A — Defender, defensive category (Champions)
 
@@ -185,14 +170,12 @@ Minimum: Impish `31 HP / 23 Def`. Boundaries: 30 HP or 22 Def → chance to OHKO
 
 ---
 
-
-
 ## Worked example A2 — Defender, attacking + speed locks (Champions)
 
 Target: **survive first hit**. User: "Charizard spread that lives 32 Atk Jolly
 Garchomp Rock Slide but speed ties with max speed Modest Charizard."
 
-Inferred: attacking/speed category; nature **Modest**; Spe locked `32 Spe`
+Inferred: attacking/speed category; nature **Modest**; Spe locked **`32 Spe`**
 (Champions max Spe). Search min HP × Def on remaining EV budget.
 
 ```bash
@@ -209,8 +192,6 @@ this spread fails.
 
 ---
 
-
-
 ## Worked example A3 — Ambiguous nature → ask first (no calc yet)
 
 User: "What does Charizard need to live Rock Slide from 32 Atk Garchomp?"
@@ -224,8 +205,6 @@ After the user replies (e.g. attacking → Modest), proceed with Procedure A
 from step 4.
 
 ---
-
-
 
 ## Worked example B — Attacker, target `guaranteed OHKO` (Champions)
 
