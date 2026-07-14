@@ -89,8 +89,12 @@ nature for every defender.
      defensive category.
 2. **If still ambiguous** (e.g. "What does Charizard need to live Rock Slide
    from 32 Atk Garchomp?" with no Spe/offense cue):
-   - **STOP.** Ask **one** clarifying question: whether to optimize under an
-     **attacking**, **speed**, or **defensive** nature.
+   - **STOP.** Ask **one** clarifying question: which nature category to
+     optimize under. Option labels only — **no** commentary after each
+     choice (no "— preserve SpA…", "— maximize bulk…", etc.). Example:
+     - Attacking (e.g. Modest)
+     - Speed (e.g. Timid)
+     - Defensive (e.g. Bold/Calm)
 3. **Honor an explicitly stated nature** — do not override it.
 
 Only offer an alternate category if the user asked for options or the primary
@@ -194,9 +198,18 @@ this spread fails.
 User: "What does Charizard need to live Rock Slide from 32 Atk Garchomp?"
 
 Nature category is ambiguous (no Spe/offense/defensive cue). **Correct first
-response:** ask whether to optimize under attacking, speed, or defensive
-nature. **Incorrect:** assume Modest, run the full EV search, then ask — by
-then the question is late and the answer may be wrong for the user's nature.
+response:** ask which nature category to optimize under, with label-only
+options (no per-option explanations):
+
+> To find the minimum Charizard spread that survives Garchomp's 32 Atk Rock
+> Slide (Champions, Doubles), which nature category should I optimize under?
+> - Attacking (e.g. Modest)
+> - Speed (e.g. Timid)
+> - Defensive (e.g. Bold/Calm)
+
+**Incorrect:** assume Modest, run the full EV search, then ask — by then the
+question is late and the answer may be wrong for the user's nature. Also
+incorrect: stuffing category tradeoffs into each option label.
 
 After the user replies (e.g. attacking → Modest), proceed with Procedure A
 from step 4.
