@@ -71,6 +71,16 @@ npx skills add jpbullalayao/pokemon-ai --skill pokemon-spread-builder
 
 
 
+### `pokemon-vocabulary`
+
+Glossary of Pokemon community nicknames and battle-mechanic shorthand. Use when interpreting or defining slang or unknown words within Pokemon conversation (e.g. Incin, Rilla, crit, full para, OHKO).
+
+```bash
+npx skills add jpbullalayao/pokemon-ai --skill pokemon-vocabulary
+```
+
+
+
 ## Install all at once
 
 ```bash
