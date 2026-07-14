@@ -63,7 +63,7 @@ npx skills add jpbullalayao/pokemon-ai --skill interpret-damage-calc-syntax
 
 ### `pokemon-spread-builder`
 
-Procedure for finding minimum-EV spreads in damage calc matchups — defender bulk to survive hits (under attacking, speed, or defensive natures) and attacker investment to meet a user-specified KO outcome (OHKO, 2HKO, 3HKO, etc.). When multiple equal-minimum bulk splits exist, sample up to three (with etc. when more) and also report an HP-preferring alternative. Use when optimizing builds for specific calc matchups.
+Procedure for finding minimum-EV spreads in damage calc matchups — defender bulk to survive hits (under attacking, speed, or defensive natures) and attacker investment to meet a user-specified KO outcome (OHKO, 2HKO, 3HKO, etc.). Use when optimizing builds for specific calc matchups.
 
 ```bash
 npx skills add jpbullalayao/pokemon-ai --skill pokemon-spread-builder

@@ -3,12 +3,11 @@ name: pokemon-spread-builder
 description: >
   Procedure for finding minimum-EV spreads in damage calc matchups — defender
   bulk to survive hits and attacker investment to meet a user-specified KO
-  outcome (OHKO, 2HKO, 3HKO, etc.). When multiple equal-minimum bulk splits
-  exist, sample up to three and also report an HP-preferring alternative. Use
-  when the user asks what build or EV spread is needed to live or survive a
-  move; what minimum Atk/SpA or bulk achieves a specific calc result; optimize
-  a spread for a matchup; or asks "what spread does X need to take Y from Z"
-  or "how much SpA does X need to 2HKO Y".
+  outcome (OHKO, 2HKO, 3HKO, etc.). Use when the user asks what build or EV
+  spread is needed to live or survive a move; what minimum Atk/SpA or
+  bulk achieves a specific calc result; optimize a spread for a matchup; or
+  asks "what spread does X need to take Y from Z" or "how much SpA does X
+  need to 2HKO Y".
 ---
 
 # Pokemon Spread Builder
