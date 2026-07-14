@@ -45,3 +45,14 @@ cp vgc/champions/{pokemon,regulation-m-a,regulation-m-b,items}.md skills/pokemon
 ```
 
 **Verification before finishing:** run `diff -r vgc/champions skills/pokemon-champions/docs` and confirm no differences.
+
+---
+
+## Cursor Cloud specific instructions
+
+This repo is static Markdown (reference docs + installable agent skills) — there is no `package.json`, no dependencies to install, and nothing to build or run. "Verifying" it means keeping content consistent:
+
+- `README.md` skill sections stay in sync with `skills/<name>/` (see **Skills and README** above).
+- Champions tables stay mirrored: `diff -r vgc/champions skills/pokemon-champions/docs` shows no differences.
+
+Skills are consumed elsewhere via `npx skills add jpbullalayao/pokemon-ai --skill <name>`.
