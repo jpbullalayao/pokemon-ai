@@ -59,8 +59,29 @@ Confirm the target verdict using the interpret skill's KO verdict table on
   **unlocked** stats that meets the resolved target. Search from low investment
   upward; never default to max investment. When Spe, Atk, or SpA EVs are locked
   by the prompt, minimize only the remaining bulk axes.
-- **Breakpoint tie-break:** when adjacent EV values produce **identical**
-  damage rolls, report the **lower** EV count (e.g. 23 Def over 24 Def).
+- **Breakpoint tie-break:** when adjacent EV values on **one axis** produce
+  **identical** damage rolls, report the **lower** EV count (e.g. 23 Def over
+  24 Def). When several HP/bulk splits share the same minimum total and
+  identical satisfying rolls, **do not pick one arbitrarily** — show a short
+  sample per **Multiple valid bulk spreads** below.
+- **Multiple valid bulk spreads (Procedure A):** when the min-total iso-EV
+  curve has more than one `(HP, Def)` or `(HP, SpD)` pair that meets the target:
+  - List up to **3** representative min-total splits as bullets; if more exist,
+    append `etc.` (or an equivalent brief "and others") — do not dump an
+    exhaustive grid.
+  - Prefer diversifying the sample across the HP↔bulk tradeoff (higher-HP /
+    lower-bulk, mid, lower-HP / higher-bulk) rather than three adjacent points.
+  - Always also compute and present an **HP-preferring** spread, even when its
+    total EVs exceed the absolute minimum:
+    1. Among all valid unlocked `(HP, bulk)` pairs that meet the target, find
+       the **minimum bulk EV** (`Def` or `SpD`) that still works for at least
+       one HP ≤ format cap.
+    2. At that fixed bulk EV, find the **lowest HP** that still meets the
+       target.
+  - HP-preferring can cost more total EVs than the absolute minimum; note that
+    it leaves more raw HP for other matchups.
+  - If the HP-preferring pair is already in the min-total sample, do not
+    duplicate it in a separate section.
 - **Roles:** infer from prompt — "my X needs to live Y from Z" → X = defender;
   "how much SpA does X need to 2HKO Y" → X = attacker, Y = defender with stated
   spread.
@@ -111,6 +132,10 @@ category cannot meet the check within EV caps.
 - Batch a small parallel set of candidate spreads (baseline + suspected
   minimum + ±1 boundary). Prefer a few targeted calls over planning a large
   EV grid in prose.
+- For Procedure A multi-spread output: characterize the min-total iso-EV
+  curve enough to know whether more than three ties exist (then append `etc.`),
+  then compute the HP-preferring Def floor — do not exhaustively list every
+  printable split.
 - Decode "32 Atk" / `+` / nature markers via `interpret-damage-calc-syntax`
   once; do not re-litigate attacker nature in long internal debate.
 
@@ -128,12 +153,28 @@ category cannot meet the check within EV caps.
 4. **Run initial calc** per `pokemon-damage-calc-cli` with default defender
    spread and the game type specified by the harness or user prompt.
 5. **Search defender bulk spreads:** iterate HP × Def (physical) or HP × SpD
-   (special) on **unlocked** stats only. Low → high.
-6. **Stop** at the least-total-EV spread meeting the target verdict under the
-   resolved nature and locks.
-7. **Present:** nature category rationale, any locked EVs, full spread, nature,
-   and `pkmn-calc --text` desc line. If the primary category fails within EV
-   caps, say so and offer an alternate category only then.
+   (special) on **unlocked** stats only. Low → high. Search enough to
+   characterize the min-total iso-EV curve — not every printable split.
+6. **Identify** the least total EV investment meeting the target verdict under
+   the resolved nature and locks. Collect representative min-total ties (cap
+   presentation at 3 + `etc.` per Shared rules).
+7. **Compute** the HP-preferring pair per Shared rules.
+8. **Present** in this order:
+   - Nature category rationale, any locked EVs, and target outcome.
+   - **Minimum total** — up to 3 bullets. When more min-total splits exist,
+     show three diverse samples and append `etc.`; omit `etc.` when ≤3 exist.
+     Example:
+     - 24 HP / 21 Def
+     - 18 HP / 27 Def
+     - 16 HP / 29 Def
+     - etc.
+   - **HP-preferring** (when distinct from the min-total set) — one bullet,
+     e.g. `- 30 HP / 16 Def`, with a short note that it keeps bulk minimal for
+     high-HP survival and drops spare HP EVs that do not change the verdict.
+   - Supporting `pkmn-calc --text` desc lines (at least one min-total and the
+     HP-preferring). Verify each listed bullet when practical.
+   - If the primary category fails within EV caps, say so and offer an alternate
+     category only then.
 
 ---
 
@@ -213,6 +254,36 @@ incorrect: stuffing category tradeoffs into each option label.
 
 After the user replies (e.g. attacking → Modest), proceed with Procedure A
 from step 4.
+
+---
+
+## Worked example A4 — Multiple min spreads + HP-preferring (Champions)
+
+Target: **survive first hit**. User: "Archaludon spread to live 32+ Atk
+Sneasler Close Combat." Attacking category → **Modest** (preserves SpA).
+
+Minimum total **45** EVs on HP/Def — several equal splits produce identical
+results. Present up to three diverse samples (omit `etc.` here because three
+known equals are shown):
+
+- 24 HP / 21 Def
+- 18 HP / 27 Def
+- 16 HP / 29 Def
+
+When the iso-EV curve has more than three splits, cap the list at three and
+append `etc.`
+
+**HP-preferring** (more total EVs than 45, but more raw HP for other hits):
+
+- 30 HP / 16 Def
+
+```bash
+pkmn-calc --champions --doubles --text -a Sneasler -d Archaludon -m "Close Combat" \
+  --attacker-evs "32 Atk" --defender-nature Modest --defender-evs "30 HP / 16 Def"
+# → 164-194 (84.1 - 99.4%) -- guaranteed 2HKO
+```
+
+Boundaries: 15 Def → 6.3% chance to OHKO; 29 HP / 16 Def fails the guarantee.
 
 ---
 
