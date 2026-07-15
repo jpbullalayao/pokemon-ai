@@ -291,8 +291,7 @@ Target: **survive first hit**. User: "Archaludon spread to live 32+ Atk
 Sneasler Close Combat." Attacking category → **Modest** (preserves SpA).
 
 Locked attacker: Sneasler, Close Combat, `32 Atk` EVs, **Adamant** (`32+ Atk`).
-Because the prompt uses `32+ Atk`, pass `--attacker-nature Adamant` — without
-it, `desc` shows bare `32 Atk` and bulk floors are far too low.
+Because the prompt uses `32+ Atk`, pass `--attacker-nature Adamant`.
 
 Minimum total **45** EVs on HP/Def — several equal splits produce identical
 results. Present up to three diverse samples (omit `etc.` here because three
@@ -320,11 +319,6 @@ pkmn-calc --champions --doubles --text -a Sneasler -d Archaludon -m "Close Comba
   --defender-nature Modest --defender-evs "30 HP / 16 Def"
 # → 164-194 (84.1 - 99.4%) -- guaranteed 2HKO
 ```
-
-Boundaries: 15 HP / 29 Def → 6.3% chance to OHKO; 29 HP / 16 Def fails the
-guarantee. Neutral `32 Atk` (omitting Adamant when `32+ Atk` is required) would
-wrongly suggest a **28**-EV minimum — pass attacker nature when notation fixes
-it.
 
 ---
 
