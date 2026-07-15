@@ -92,7 +92,7 @@ Before **any** `pkmn-calc` call in Procedure A or B:
 
 1. Parse each side's spread with `interpret-damage-calc-syntax` (`N Stat` /
    `N+ Stat` / `N- Stat` / named nature / stages / IVs).
-2. Write a locked parameter block: species, move, EVs, nature,
+2. Write a locked parameter block for each one available: species, move, EVs, nature,
    items, abilities, field.
 3. Map `+`/`-` markers on EV counts to flags (EVs in `--*-evs`; nature is a
    **separate** flag — `+`/`-` is never encoded inside the EV string
