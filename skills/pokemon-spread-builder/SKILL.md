@@ -86,11 +86,36 @@ Confirm the target verdict using the interpret skill's KO verdict table on
   "how much SpA does X need to 2HKO Y" → X = attacker, Y = defender with stated
   spread.
 
-### Nature category (Procedure A)
+### Locked parameters → CLI (hard gate)
+
+Before **any** `pkmn-calc` call in Procedure A or B:
+
+1. Parse each side's spread with `interpret-damage-calc-syntax` (`N Stat` /
+   `N+ Stat` / `N- Stat` / named nature / stages / IVs).
+2. Write a locked parameter block for each one available: species, move, EVs, nature,
+   items, abilities, field.
+3. Map `+`/`-` markers on EV counts to flags (EVs in `--*-evs`; nature is a
+   **separate** flag — `+`/`-` is never encoded inside the EV string
+   alone). Pass `--attacker-nature` / `--defender-nature` **when the nature
+   is already known** from notation, an explicit prompt, or a resolved defender
+   nature category — omit the flag when nature is neutral or still ambiguous.
+
+| Prompt fragment | Required `pkmn-calc` (attacker side) |
+| --- | --- |
+| `32 Atk` (no `+`/`-`) | `--attacker-evs "32 Atk"` — omit nature unless specified explicitly |
+| `32+ Atk` | `--attacker-evs "32 Atk"` **and** `--attacker-nature` set to an **Attack-boosting** nature |
+| `32- Atk` | `--attacker-evs "32 Atk"` **and** `--attacker-nature` set to an **Attack-hindering** nature |
+
+Mirror the same marker→separate-nature-flag rule for defender notation when
+Procedure B locks a defended spread.
+
+### Nature category (Procedure A — defender only)
 
 Before searching bulk EVs — and **before any `pkmn-calc` call** — resolve which
-**nature category** the spread should use. Do not default to a pure defensive
-nature for every defender.
+**nature category** the **defender** spread should use. This is separate from
+the attacker's nature when known from the prompt — when `N+ Stat` / `N- Stat`
+notation or a named attacker nature fixes the threat, pass `--attacker-nature`;
+otherwise omit it. Do not default to a pure defensive nature for every defender.
 
 | Category | Typical natures | When |
 | -------- | --------------- | ---- |
@@ -137,19 +162,22 @@ category cannot meet the check within EV caps.
   then compute the HP-preferring Def floor — do not exhaustively list every
   printable split.
 - Decode "32 Atk" / `+` / nature markers via `interpret-damage-calc-syntax`
-  once; do not re-litigate attacker nature in long internal debate.
+  once; after locking known attacker/defender natures, do not re-debate them —
+  pass `--attacker-nature` / `--defender-nature` only where the locked block
+  already specifies a nature.
 
 ---
 
 ## Procedure A — Defender (survive / meet bulk target)
 
 1. **Resolve target outcome** (typically: survive first hit).
-2. **Decode attacker** from the prompt per `interpret-damage-calc-syntax`
-   (notation only — no calc yet).
-3. **Resolve nature category** and any **EV locks** (Spe / Atk / SpA floors
-   implied by speed ties, benchmarks, or stated spreads). Fix the concrete
-   nature. **If nature is ambiguous, stop here and ask — do not proceed to
-   step 4 until answered.**
+2. **Decode attacker** from the prompt per `interpret-damage-calc-syntax` and
+   lock attacker CLI params per **Locked parameters → CLI** (notation only — no
+   calc yet).
+3. **Resolve defender nature category** and any **EV locks** (Spe / Atk / SpA
+   floors implied by speed ties, benchmarks, or stated spreads). Fix the
+   concrete defender nature. **If defender nature category is ambiguous, stop
+   here and ask — do not proceed to step 4 until answered.**
 4. **Run initial calc** per `pokemon-damage-calc-cli` with default defender
    spread and the game type specified by the harness or user prompt.
 5. **Search defender bulk spreads:** iterate HP × Def (physical) or HP × SpD
@@ -262,13 +290,16 @@ from step 4.
 Target: **survive first hit**. User: "Archaludon spread to live 32+ Atk
 Sneasler Close Combat." Attacking category → **Modest** (preserves SpA).
 
+Locked attacker: Sneasler, Close Combat, `32 Atk` EVs, **Adamant** (`32+ Atk`).
+Because the prompt uses `32+ Atk`, pass `--attacker-nature Adamant`.
+
 Minimum total **45** EVs on HP/Def — several equal splits produce identical
 results. Present up to three diverse samples (omit `etc.` here because three
 known equals are shown):
 
-- 24 HP / 21 Def
-- 18 HP / 27 Def
 - 16 HP / 29 Def
+- 18 HP / 27 Def
+- 24 HP / 21 Def
 
 When the iso-EV curve has more than three splits, cap the list at three and
 append `etc.`
@@ -279,11 +310,15 @@ append `etc.`
 
 ```bash
 pkmn-calc --champions --doubles --text -a Sneasler -d Archaludon -m "Close Combat" \
-  --attacker-evs "32 Atk" --defender-nature Modest --defender-evs "30 HP / 16 Def"
+  --attacker-evs "32 Atk" --attacker-nature Adamant \
+  --defender-nature Modest --defender-evs "16 HP / 29 Def"
+# → 152-180 (83.9 - 99.4%) -- guaranteed 2HKO
+
+pkmn-calc --champions --doubles --text -a Sneasler -d Archaludon -m "Close Combat" \
+  --attacker-evs "32 Atk" --attacker-nature Adamant \
+  --defender-nature Modest --defender-evs "30 HP / 16 Def"
 # → 164-194 (84.1 - 99.4%) -- guaranteed 2HKO
 ```
-
-Boundaries: 15 Def → 6.3% chance to OHKO; 29 HP / 16 Def fails the guarantee.
 
 ---
 
