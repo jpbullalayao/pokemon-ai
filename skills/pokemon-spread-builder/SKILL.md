@@ -9,7 +9,6 @@ description: >
   asks "what spread does X need to take Y from Z" or "how much SpA does X
   need to 2HKO Y".
 ---
-
 # Pokemon Spread Builder
 
 Procedure for finding **minimum-EV spreads** in damage calc matchups. Covers
@@ -117,31 +116,42 @@ the attacker's nature when known from the prompt — when `N+ Stat` / `N- Stat`
 notation or a named attacker nature fixes the threat, pass `--attacker-nature`;
 otherwise omit it. Do not default to a pure defensive nature for every defender.
 
-| Category | Typical natures | When |
+Infer **only** from **literal words in the prompt**. A species name alone never
+implies a category. Do **not** use typical sets, VGC roles, or "what this mon
+usually runs."
+
+| Category | Typical natures | When (prompt must say so) |
 | -------- | --------------- | ---- |
-| Defensive | Bold/Impish/Calm/Careful (boost the threatened bulk stat) | Walls, supports, or user asks for bulk / defensive nature |
-| Attacking | Adamant/Modest (etc.); avoid dropping the threatened bulk stat when possible | User wants offensive power preserved |
-| Speed | Jolly/Timid (etc.); same bulk-drop caveat | User cares about outspeeding or speed ties |
+| Defensive | Bold/Impish/Calm/Careful (boost the threatened bulk stat) | User asks for bulky / defensive nature |
+| Attacking | Adamant/Modest (etc.); avoid dropping the threatened bulk stat when possible | User wants offense preserved, names Modest/Adamant, or says keep SpA/Atk |
+| Speed | Jolly/Timid (etc.); same bulk-drop caveat | User cares about outspeeding, speed ties, or names Timid/Jolly |
 
-**Resolve in this order:**
+**Resolve in this order (hard gate):**
 
-1. **Infer from the prompt** when constraints imply a category or exact nature:
+1. **Scan the prompt for an explicit cue** — named nature, Spe/speed-tie lock,
+   or the words bulky / defensive / offense / keep SpA|Atk /
+   Timid / Modest / etc.
+2. **If any cue is present**, lock that category (and nature/Spe when stated):
    - "Modest Charizard that lives …" → attacking category, nature fixed Modest.
    - "live Rock Slide … but speed ties with max speed Modest Charizard" →
      attacking/speed category; nature Modest; Spe locked to that benchmark
      (Champions: `32 Spe` for max Spe Modest). Remaining EVs go to HP/Def for
      the survive check.
-   - Incineroar / clearly supportive bulk checks without offensive wording →
-     defensive category.
-2. **If still ambiguous** (e.g. "What does Charizard need to live Rock Slide
-   from 32 Atk Garchomp?" with no Spe/offense cue):
-   - **STOP.** Ask **one** clarifying question: which nature category to
-     optimize under. Option labels only — **no** commentary after each
-     choice (no "— preserve SpA…", "— maximize bulk…", etc.). Example:
+   - "bulky Incineroar" / "Impish Incineroar" → defensive category (or the
+     named nature).
+3. **If no cue** (e.g. "What does Charizard need to live Rock Slide from 32 Atk
+   Garchomp?" or "what build on Sylveon to live 32+ Atk Dire Claw from
+   Sneasler"):
+   - **STOP.** Your **next output** is the clarifying question — at most one
+     short setup sentence, then the options. **Do not** debate categories,
+     compare worked examples, or invent a role for the species.
+   - Ask **one** clarifying question: which nature category to optimize under.
+     Option labels only — **no** commentary after each choice (no "— preserve
+     SpA…", "— maximize bulk…", etc.):
      - Attacking (e.g. Modest)
      - Speed (e.g. Timid)
      - Defensive (e.g. Bold/Calm)
-3. **Honor an explicitly stated nature** — do not override it.
+4. **Honor an explicitly stated nature** — do not override it.
 
 Only offer an alternate category if the user asked for options or the primary
 category cannot meet the check within EV caps.
@@ -150,6 +160,8 @@ category cannot meet the check within EV caps.
 
 ## Efficiency (keep Procedure A/B fast)
 
+- **Ambiguous defender nature category:** do not load extra skills, plan EV
+  grids, or write long reasoning — **ask first**, then continue.
 - After nature + target + attacker/defender decoding are resolved, run calcs
   immediately. Do not re-derive format caps, spread-move multipliers, or
   Champions stat math already covered by the prerequisite skills — pass flags
@@ -174,10 +186,10 @@ category cannot meet the check within EV caps.
 2. **Decode attacker** from the prompt per `interpret-damage-calc-syntax` and
    lock attacker CLI params per **Locked parameters → CLI** (notation only — no
    calc yet).
-3. **Resolve defender nature category** and any **EV locks** (Spe / Atk / SpA
-   floors implied by speed ties, benchmarks, or stated spreads). **If defender
-   nature category is ambiguous, stop here and ask — do not proceed to step 4
-   until answered.**
+3. **Resolve defender nature category** (prompt-literal cues only — see Nature
+   category) and any **EV locks** (Spe / Atk / SpA floors from the prompt).
+   **No explicit cue → ask now** (next message = question + label-only
+   options; no role debate). Do not proceed to step 4 until answered.
 4. **Run initial calc** per `pokemon-damage-calc-cli` with default defender
    spread and the game type specified by the harness or user prompt.
 5. **Search defender bulk spreads:** iterate HP × Def (physical) or HP × SpD
@@ -226,8 +238,9 @@ category cannot meet the check within EV caps.
 
 ## Worked example A — Defender, defensive category (Champions)
 
-Target: **survive first hit**. Sneasler `32 Atk` Close Combat vs Incineroar.
-Incineroar is a support — defensive category (Impish).
+Target: **survive first hit**. User: "Impish Incineroar to live 32 Atk Close
+Combat from Sneasler." Prompt names **Impish** → defensive category locked; no
+ask.
 
 ```bash
 pkmn-calc --champions --doubles --text -a Sneasler -d Incineroar -m "Close Combat" \
@@ -264,21 +277,21 @@ this spread fails.
 
 ## Worked example A3 — Ambiguous nature → ask first (no calc yet)
 
-User: "What does Charizard need to live Rock Slide from 32 Atk Garchomp?"
+Same gate for prompts like "What does Charizard need to live Rock Slide from
+32 Atk Garchomp?" or "what build on Sylveon to live 32+ Atk Dire Claw from
+Sneasler" — **no** nature/Spe/bulky/offense words → **ask immediately**.
 
-Nature category is ambiguous (no Spe/offense/defensive cue). **Correct first
-response:** ask which nature category to optimize under, with label-only
-options (no per-option explanations):
+**Correct first response** (no long preamble; do not compare other examples):
 
-> To find the minimum Charizard spread that survives Garchomp's 32 Atk Rock
-> Slide (Champions, Doubles), which nature category should I optimize under?
+> To find the minimum Sylveon spread that survives Sneasler's 32+ Atk Dire Claw
+> (Champions, Doubles), which nature category should I optimize under?
 > - Attacking (e.g. Modest)
 > - Speed (e.g. Timid)
 > - Defensive (e.g. Bold/Calm)
 
-**Incorrect:** assume Modest, run the full EV search, then ask — by then the
-question is late and the answer may be wrong for the user's nature. Also
-incorrect: stuffing category tradeoffs into each option label.
+**Incorrect:** long internal debate; assume Modest/Bold from "typical Sylveon";
+treat A4 as permission to invent Modest; run calcs then ask; stuff tradeoffs
+into each option label.
 
 After the user replies (e.g. attacking → Modest), proceed with Procedure A
 from step 4.
@@ -287,8 +300,9 @@ from step 4.
 
 ## Worked example A4 — Multiple min spreads + HP-preferring (Champions)
 
-Target: **survive first hit**. User: "Archaludon spread to live 32+ Atk
-Sneasler Close Combat." Attacking category → **Modest** (preserves SpA).
+Target: **survive first hit**. User first asked for an Archaludon live check
+with no nature cue (ask per A3), then answered **Attacking**. Continue with
+**Modest**. User threat: `32+ Atk` Sneasler Close Combat.
 
 Locked attacker: Sneasler, Close Combat, `32 Atk` EVs, **Adamant** (`32+ Atk`).
 Because the prompt uses `32+ Atk`, pass `--attacker-nature Adamant`.
