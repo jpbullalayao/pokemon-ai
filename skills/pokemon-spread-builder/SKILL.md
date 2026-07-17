@@ -175,9 +175,9 @@ category cannot meet the check within EV caps.
    lock attacker CLI params per **Locked parameters → CLI** (notation only — no
    calc yet).
 3. **Resolve defender nature category** and any **EV locks** (Spe / Atk / SpA
-   floors implied by speed ties, benchmarks, or stated spreads). Fix the
-   concrete defender nature. **If defender nature category is ambiguous, stop
-   here and ask — do not proceed to step 4 until answered.**
+   floors implied by speed ties, benchmarks, or stated spreads). **If defender
+   nature category is ambiguous, stop here and ask — do not proceed to step 4
+   until answered.**
 4. **Run initial calc** per `pokemon-damage-calc-cli` with default defender
    spread and the game type specified by the harness or user prompt.
 5. **Search defender bulk spreads:** iterate HP × Def (physical) or HP × SpD
